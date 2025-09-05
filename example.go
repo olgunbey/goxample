@@ -35,17 +35,22 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/persons/create", func(c *gin.Context) {
+		pService := personService
 		var p domain.Person
+
+		if c.ContentType() != "application/json" {
+			c.JSON(http.StatusUnsupportedMediaType, gin.H{"error": "Content-Type must be application/json"})
+			return
+		}
 
 		if err := c.ShouldBindJSON(&p); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		personService.AddPerson(p)
+		pService.AddPerson(p)
 
 		c.JSON(http.StatusOK, gin.H{"status": "person created"})
-
 	})
 	router.Run("localhost:8080")
 }

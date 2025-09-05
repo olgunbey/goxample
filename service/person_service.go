@@ -5,6 +5,10 @@ import (
 	"example/repository"
 )
 
+type IPersonService interface {
+	AddPerson(p domain.Person) error
+}
+
 type PersonService struct {
 	repo repository.IPersonRepository
 }
