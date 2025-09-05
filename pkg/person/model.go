@@ -1,4 +1,4 @@
-package domain
+package person
 
 type Person struct {
 	Id   int
