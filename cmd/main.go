@@ -1,34 +1,19 @@
 package main
 
 import (
-	"database/sql"
 	"example/internal/models"
 	"example/internal/person/repository"
 	"example/internal/person/usecase"
-	"fmt"
+	"example/pkg/db/postgres"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "username123"
-	password = "password123"
-	dbname   = "testdb"
-)
-
 func main() {
-	psqlInfo := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
 
+	db := postgres.NewDbConn()
 	personRepository := repository.NewPersonRepository(db)
 	personService := usecase.NewPersonService(personRepository)
 
