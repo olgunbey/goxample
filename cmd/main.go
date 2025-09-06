@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"example/pkg/person"
+	"example/internal/models"
+	"example/internal/person/repository"
+	"example/internal/person/usecase"
 	"fmt"
 	"net/http"
 
@@ -27,14 +29,14 @@ func main() {
 		panic(err)
 	}
 
-	personRepository := person.NewPersonRepository(db)
-	personService := person.NewPersonService(personRepository)
+	personRepository := repository.NewPersonRepository(db)
+	personService := usecase.NewPersonService(personRepository)
 
 	router := gin.Default()
 
 	router.POST("/persons/create", func(c *gin.Context) {
 		pService := personService
-		var p person.Person
+		var p models.Person
 
 		if c.ContentType() != "application/json" {
 			c.JSON(http.StatusUnsupportedMediaType, gin.H{"error": "Content-Type must be application/json"})
