@@ -1,0 +1,20 @@
+name: Github Actions Workflow
+
+on:    
+    pull_request:
+        types: [synchronize]
+        branches: [main,master]
+
+jobs:
+    job1:
+        name: Job 1
+        runs-on: ubuntu-latest
+        if: ${{github.ref_name=='main' || github.ref_name=='master'}}
+
+        steps:
+            - name: Step 1
+              shell: bash
+              run: | 
+                echo "PR Description: "
+                echo "${{github.event.pull_request.body}}"
+
