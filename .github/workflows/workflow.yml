@@ -9,12 +9,13 @@ jobs:
     job1:
         name: Job 1
         runs-on: ubuntu-latest
-        if: ${{github.ref_name=='main' || github.ref_name=='master'}}
 
         steps:
             - name: Step 1
               shell: bash
               run: | 
                 echo "PR Description: "
-                echo "${{github.event.pull_request.body}}"
+                echo "${{github.event.pull_request.body}}
+                Target branch: ${{github.event.pull_request.base.ref}}
+                Current Branch: ${{github.event.pull_request.head.ref}}"
 
