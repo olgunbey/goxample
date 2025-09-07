@@ -5,6 +5,7 @@ import (
 	"example/internal/person/repository"
 	"example/internal/person/usecase"
 	"example/pkg/db/postgres"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,13 @@ import (
 )
 
 func main() {
+
+	dizi := make(map[string]string)
+	dizi["test"] = "data"
+
+	for key, value := range dizi {
+		fmt.Println(key, value)
+	}
 
 	db := postgres.NewDbConn()
 	personRepository := repository.NewPersonRepository(db)
