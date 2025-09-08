@@ -1,13 +1,15 @@
 package usecase
 
 import (
+	"database/sql"
 	"example/internal/models"
 	"example/internal/person/dtos"
 	"example/internal/person/repository"
 )
 
 type IPersonService interface {
-	AddPerson(p models.Person) dtos.AddPersonResponseDto
+	AddPerson(p *dtos.AddPersonRequestDto) dtos.AddPersonResponseDto
+	RemovePersonGetById(id int) *dtos.RemovePersonGetByIdResponseDto
 }
 
 type PersonService struct {
@@ -26,4 +28,15 @@ func (s *PersonService) AddPerson(p *dtos.AddPersonRequestDto) *dtos.AddPersonRe
 	}
 	id, err := result.LastInsertId()
 	return &dtos.AddPersonResponseDto{Id: id, Message: "Person added successfully", Successfully: true}
+}
+func (s *PersonService) RemovePersonGetById(id int) *dtos.RemovePersonGetByIdResponseDto {
+	valueId, err := s.repo.RemoveGetById(id)
+	if err != nil {
+
+		if err == sql.ErrNoRows {
+			return &dtos.RemovePersonGetByIdResponseDto{Id: 0, Message: "Person not found", Successfully: false, StatusCode: 404}
+		}
+		return &dtos.RemovePersonGetByIdResponseDto{Id: 0, Message: err.Error(), Successfully: false, StatusCode: 500}
+	}
+	return &dtos.RemovePersonGetByIdResponseDto{Id: valueId, Message: "Person removed successfully", Successfully: true, StatusCode: 200}
 }

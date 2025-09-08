@@ -5,7 +5,9 @@ import (
 	"example/internal/person/repository"
 	"example/internal/person/usecase"
 	"example/pkg/db/postgres"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -17,7 +19,7 @@ func main() {
 	personRepository := repository.NewPersonRepository(db)
 	personService := usecase.NewPersonService(personRepository)
 	router := gin.Default()
-	router.POST("/persons/create", func(c *gin.Context) {
+	router.POST("/person/create", func(c *gin.Context) {
 		pService := personService
 		var p dtos.AddPersonRequestDto
 
@@ -34,5 +36,19 @@ func main() {
 
 		c.JSON(http.StatusOK, gin.H{"status": "person created"})
 	})
+	router.GET("/person/RemovePersonGetById", func(c *gin.Context) {
+		pService := personService
+		id := c.Query("id")
+
+		val, err := strconv.Atoi(id)
+		if err != nil {
+			fmt.Println("Error converting id to integer:", err)
+		}
+		responseDto := pService.RemovePersonGetById(val)
+		c.JSON(responseDto.StatusCode, responseDto)
+		return
+
+	})
+
 	router.Run("localhost:8080")
 }
