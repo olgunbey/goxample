@@ -46,7 +46,6 @@ func main() {
 		}
 		responseDto := pService.RemovePersonGetById(val)
 		c.JSON(responseDto.StatusCode, responseDto)
-		return
 
 	})
 
