@@ -14,12 +14,6 @@ import (
 )
 
 func main() {
-
-	var testprop string
-
-	testprop = "This is a test property"
-	fmt.Println(testprop)
-
 	db := postgres.NewDbConn()
 	personRepository := repository.NewPersonRepository(db)
 	personService := usecase.NewPersonService(personRepository)
