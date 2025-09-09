@@ -8,13 +8,13 @@ type Postgres struct {
 	Dbname   string
 }
 
-func GetConfig() *Postgres {
+func GetPostgresConfig() *Postgres {
 
 	return &Postgres{
 		Host:     "localhost",
 		Port:     5432,
-		User:     "postgres",
-		Password: "admin",
-		Dbname:   "goxample",
+		User:     "user123",
+		Password: "password123",
+		Dbname:   "GoxampleDb",
 	}
 }

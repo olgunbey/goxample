@@ -32,9 +32,8 @@ func main() {
 			return
 		}
 
-		pService.AddPerson(&p)
-
-		c.JSON(http.StatusOK, gin.H{"status": "person created"})
+		response := pService.AddPerson(&p)
+		c.JSON(response.StatusCode, response)
 	})
 	router.GET("/person/RemovePersonGetById", func(c *gin.Context) {
 		pService := personService

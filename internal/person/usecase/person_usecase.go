@@ -24,10 +24,9 @@ func (s *PersonService) AddPerson(p *dtos.AddPersonRequestDto) *dtos.AddPersonRe
 	addPerson := models.Person{Name: p.Name, Age: p.Age}
 	result, err := s.repo.Add(&addPerson)
 	if err != nil {
-		return &dtos.AddPersonResponseDto{Id: 0, Message: err.Error(), Successfully: false}
+		return &dtos.AddPersonResponseDto{Id: 0, Message: err.Error(), Successfully: false, StatusCode: 500}
 	}
-	id, err := result.LastInsertId()
-	return &dtos.AddPersonResponseDto{Id: id, Message: "Person added successfully", Successfully: true}
+	return &dtos.AddPersonResponseDto{Id: int64(result), Message: "Person added successfully", Successfully: true, StatusCode: 201}
 }
 func (s *PersonService) RemovePersonGetById(id int) *dtos.RemovePersonGetByIdResponseDto {
 	valueId, err := s.repo.RemoveGetById(id)

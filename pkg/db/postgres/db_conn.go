@@ -7,7 +7,7 @@ import (
 )
 
 func NewDbConn() *sql.DB {
-	cnf := config.GetConfig()
+	cnf := config.GetPostgresConfig()
 	psqlInfo := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		cnf.Host, cnf.Port, cnf.User, cnf.Password, cnf.Dbname)
