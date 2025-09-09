@@ -34,12 +34,16 @@ jobs:
               shell: pwsh
               run: |  
                 $rawDescription = "${{needs.job1.outputs.pr-description}}"
-                $escapedDescription = $rawDescription | ConvertTo-Json  
+                $fixedJson = $rawDescription -replace '(\w+):', '"$1":' -replace ':([a-zA-Z0-9_]+)([,\}])', ':"$1"$2'
+                $descriptionObj = $fixedJson | ConvertTo-Json  
+                $escapedDescription = $descriptionObj | ConvertTo-Json -Compress
                 $body = @{
                     Description = $escapedDescription
                     Branch = "${{needs.job1.outputs.current-branch}}"
                     BaseUrl = "https://localhost:7005"
                 } | ConvertTo-Json -Depth 5
-                echo "$body"
+                echo "$fixedJson"
+                echo "$escapedDescription"
+                echo "$fixedJson"
 
 
