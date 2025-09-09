@@ -11,7 +11,6 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
           pr-description: ${{ steps.setvars.outputs.var1 }}
-          target-branch: ${{ steps.setvars.outputs.var2 }}
           current-branch: ${{ steps.setvars.outputs.var3 }}
 
         steps:
@@ -20,7 +19,6 @@ jobs:
               id: setvars
               run: | 
                 echo "var1=${{ github.event.pull_request.body }}" >> $GITHUB_OUTPUT
-                echo "var2=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
                 echo "var3=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
                 
 
@@ -33,10 +31,18 @@ jobs:
 
         steps:
             - name: Step 1
-              shell: bash
-              run: | 
-                echo "PR Description from Job 1: "
-                Description "${{needs.job1.outputs.pr-description}}
-                Target branch from Job 1: ${{needs.job1.outputs.target-branch}}
-                Current Branch from Job 1: ${{needs.job1.outputs.current-branch}}"
+              shell: pwsh
+              run: |  
+                $escapedDescription = $rawDescription | ConvertTo-Json  
+                $body = @{
+                    Description = $escapedDescription
+                    Branch = "${{needs.job1.outputs.current-branch}}"
+                    BaseUrl = "https://localhost:8080"
+                } | ConvertTo-Json -Depth 5
+                Invoke-RestMethod -Uri "https://localhost:8080/Request/Handler" `
+                -Method Post `
+                -Body $body `
+                -ContentType "application/json"
+                echo "$body"
+                
 
