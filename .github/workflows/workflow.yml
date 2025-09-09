@@ -39,10 +39,6 @@ jobs:
                     Branch = "${{needs.job1.outputs.current-branch}}"
                     BaseUrl = "https://localhost:8080"
                 } | ConvertTo-Json -Depth 5
-                Invoke-RestMethod -Uri "https://localhost:8080/Request/Handler" `
-                -Method Post `
-                -Body $body `
-                -ContentType "application/json"
                 echo "$body"
                 
 
