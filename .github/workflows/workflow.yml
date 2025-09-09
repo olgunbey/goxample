@@ -38,7 +38,7 @@ jobs:
                 $body = @{
                     Description = $escapedDescription
                     Branch = "${{needs.job1.outputs.current-branch}}"
-                    BaseUrl = "https://localhost:8080"
+                    BaseUrl = "https://localhost:7005"
                 } | ConvertTo-Json -Depth 5
                 echo "$body"
 
