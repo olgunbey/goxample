@@ -33,6 +33,7 @@ jobs:
             - name: Step 1
               shell: pwsh
               run: |  
+                $rawDescription = "${{needs.job1.outputs.pr-description}}"
                 $escapedDescription = $rawDescription | ConvertTo-Json  
                 $body = @{
                     Description = $escapedDescription
@@ -40,5 +41,5 @@ jobs:
                     BaseUrl = "https://localhost:8080"
                 } | ConvertTo-Json -Depth 5
                 echo "$body"
-                
+
 
