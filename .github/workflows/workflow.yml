@@ -33,15 +33,14 @@ jobs:
             - name: Step 1
               shell: pwsh
               run: |  
-                $rawDescription = "${{needs.job1.outputs.pr-description}}"
-                $fixedJson = $rawDescription -replace '"', '\"'
+                $rawDescription = '${{needs.job1.outputs.pr-description}}'
+                $jsonEscaped = $rawDescription | ConverTo-Json -Depth 5
                 $body = @{
-                    Description = $fixedJson
+                    Description = $jsonEscaped
                     Branch = "${{needs.job1.outputs.current-branch}}"
                     BaseUrl = "https://localhost:7005"
                 } | ConvertTo-Json -Depth 5
-                echo "$fixedJson"
-                echo "$fixedJson"
-                echo "$rawDescription"
+                echo "$jsonEscaped"
+                echo "$body"
 
 
