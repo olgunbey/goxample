@@ -18,8 +18,8 @@ jobs:
               shell: bash
               id: setvars
               run: | 
-                echo "var1=${{ github.event.pull_request.body }}" >> $GITHUB_OUTPUT
-                echo "var3=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+                echo "var1='${{ github.event.pull_request.body }}'" >> $GITHUB_OUTPUT
+                echo "var3='${{ github.event.pull_request.head.ref }}'" >> $GITHUB_OUTPUT
                 
 
 
@@ -34,7 +34,7 @@ jobs:
               shell: pwsh
               run: |  
                 $rawDescription = '${{needs.job1.outputs.pr-description}}'
-                $jsonEscaped = $rawDescription | ConverTo-Json -Depth 5
+                $jsonEscaped = $rawDescription | ConvertTo-Json -Depth 5
                 $body = @{
                     Description = $jsonEscaped
                     Branch = "${{needs.job1.outputs.current-branch}}"
