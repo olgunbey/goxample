@@ -14,6 +14,8 @@ import (
 )
 
 func main() {
+
+	fmt.Println("Starting server on http://localhost:8080")
 	db := postgres.NewDbConn()
 	personRepository := repository.NewPersonRepository(db)
 	personService := usecase.NewPersonService(personRepository)
