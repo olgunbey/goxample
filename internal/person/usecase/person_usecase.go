@@ -13,15 +13,16 @@ type IPersonService interface {
 }
 
 type PersonService struct {
-	repo repository.IPersonRepository
+	repo *repository.PersonRepository
 }
 
-func NewPersonService(r repository.IPersonRepository) *PersonService {
+func NewPersonService(r *repository.PersonRepository) *PersonService {
 	return &PersonService{repo: r}
 }
 
 func (s *PersonService) AddPerson(p *dtos.AddPersonRequestDto) *dtos.AddPersonResponseDto {
 	addPerson := models.Person{Name: p.Name, Age: p.Age}
+
 	result, err := s.repo.Add(&addPerson)
 	if err != nil {
 		return &dtos.AddPersonResponseDto{Id: 0, Message: err.Error(), Successfully: false, StatusCode: 500}
